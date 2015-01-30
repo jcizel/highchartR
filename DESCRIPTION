@@ -4,6 +4,7 @@ Version: 0.0.0.9000
 Authors@R: person("Janko", "Cizel", , "jcizel@gmail.com", role = c("aut", "cre"))
 Description: This is a collection of htmlwidgets that provide a wrappers around Highchartsa and Highstock APIs. 
 Depends: R (>= 3.1.1),
+	 htmlwidgets,
 	 data.table,
 	 pipeR,
 	 rlist,
