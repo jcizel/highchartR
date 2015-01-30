@@ -1,37 +1,36 @@
-n#' A wrapper for Highcharts.js graphing library (http://api.highcharts.com/highcharts)
+#' A wrapper for Highstock.js graphing library (http://api.highcharts.com/highstock)
 #'
-#' This function is a wrapper around the Highcharts.js library. This function is
-#' a wrapper around the Highstock.js library. Currently, this is still an early
-#' development version, so there are still quite many glitches.
-#' 
+#' This function is a wrapper around the Highstock.js library. Currently, this
+#' is still an early development version, so there are still quite many glitches.
 #'
 #' @import htmlwidgets
 #'
 #' @export
 ##' @param data A data.frame or data.table object, which must be in a long
 ##' format. 
-##' @param x Name of the x-axis variable.
+##' @param x Name of the x-axis variable. `highstocks` function expects this to be
+##' formatted a s a date.
 ##' @param y Name of the y-axis variable.
 ##' @param group Name of the group variable. Default is NULL.
-##' @param type Type of the graph to be produced. See
-##' http://api.highcharts.com/highcharts for the possibilities.
-##' @param title Title of the graph
-##' @param xAxis A named list of options to be passed to the Highcharts API (see
-##' http://api.highcharts.com/highcharts for details)
-##' @param yAxis A named list of options to be passed to the Highcharts API (see
-##' http://api.highcharts.com/highcharts for details)
+##' 
+##' @param type Type of graph to be produced. Currently, this wrapper supports
+##' only a line option. 
+##' @param title Title of the graph.
+##' @param xAxis A named list of options to be passed to the Highstock API (see
+##' http://api.highcharts.com/highstock for details)
+##' @param yAxis A named list of options to be passed to the Highstock API (see
+##' http://api.highcharts.com/highstock for details)
 ##' @param width Width of the graph...
 ##' @param height Height of the graph...
-##' @param chartOpts A named list of options to be passed to the Highcharts API (see
-##' http://api.highcharts.com/highcharts for details)
-##' @param creditsOpts  A named list of options to be passed to the Highcharts API (see
-##' http://api.highcharts.com/highcharts for details)
-##' @param exportingOpts A named list of options to be passed to the Highcharts API (see
-##' http://api.highcharts.com/highcharts for details)
-##' @param plotOptions  A named list of options to be passed to the Highcharts API (see
-##' http://api.highcharts.com/highcharts for details)
-##' @param dataList A list of data.tables, one for each series to be plotted. 
-highcharts <- function(
+##' @param chartOpts A named list of options to be passed to the Highstock API (see
+##' http://api.highcharts.com/highstock for details)
+##' @param creditsOpts A named list of options to be passed to the Highstock API (see
+##' http://api.highcharts.com/highstock for details)
+##' @param exportingOpts A named list of options to be passed to the Highstock API (see
+##' http://api.highcharts.com/highstock for details)
+##' @param plotOptions A named list of options to be passed to the Highstock API (see
+##' http://api.highcharts.com/highstock for details)
+highstocks <- function(
     data = NULL,
     x = NULL,
     y = NULL,
@@ -56,12 +55,12 @@ highcharts <- function(
     if (is.null(group)){
         group = 'group'
         
-        data %>>%
+        data <- copy(data) %>>%
         mutate(
             group = 1
         )
     }
-
+    
     data %>>%
     select_(
         x,
@@ -73,6 +72,9 @@ highcharts <- function(
         y = y,
         group = group
     ) %>>%
+    mutate(
+        x = (x %>>% as.POSIXct %>>% as.numeric) * 1000 
+    ) %>>%    
     .convertDTtoList(
         group = 'group'
     ) ->
@@ -96,7 +98,7 @@ highcharts <- function(
 
   # create widget
   htmlwidgets::createWidget(
-    name = 'highcharts',
+    name = 'highstocks',
     x,
     width = width,
     height = height,
@@ -107,16 +109,16 @@ highcharts <- function(
 #' Widget output function for use in Shiny
 #'
 #' @export
-highchartsOutput <- function(outputId, width = '100%', height = '400px'){
-  shinyWidgetOutput(outputId, 'highcharts', width, height, package = 'highcharts')
+highstocksOutput <- function(outputId, width = '100%', height = '400px'){
+  shinyWidgetOutput(outputId, 'highstocks', width, height, package = 'highcharts')
 }
 
 #' Widget render function for use in Shiny
 #'
 #' @export
-renderHighcharts <- function(expr, env = parent.frame(), quoted = FALSE) {
+renderHighstocks <- function(expr, env = parent.frame(), quoted = FALSE) {
   if (!quoted) { expr <- substitute(expr) } # force quoted
-  shinyRenderWidget(expr, highchartsOutput, env, quoted = TRUE)
+  shinyRenderWidget(expr, highstocksOutput, env, quoted = TRUE)
 }
 
 .convertDTtoList <- function(dt, group){
@@ -135,6 +137,57 @@ renderHighcharts <- function(expr, env = parent.frame(), quoted = FALSE) {
 
     return(out)
 }
+
+
+## library(quantmod)
+## library(dplyr)
+## symbols <- c("MSFT","C","AAPL")
+
+## require(dplyr)
+
+
+## symbols %>>%
+## list.map(
+##     get(getSymbols(.))
+## ) %>>%
+## list.map(
+##     . %>>%
+##     as.data.frame %>>%
+##     mutate(
+##         name = .name,
+##         date = rownames(.)
+##     ) %>>%
+##     select(
+##         name,
+##         date,
+##         price = contains("close")
+##     ) %>>%
+##     data.table    
+## ) %>>%
+## rbindlist ->
+##     data
+
+## dt <- data[name =='AAPL']
+
+## highstocks(
+##     data = dt,
+##     x = 'date',
+##     y = 'price',
+##     group = NULL
+## )
+
+## highstocks(
+##     data = data,
+##     x = 'date',
+##     y = 'price',
+##     group = 'name'
+## )
+
+
+
+## dt[,qplot(x = date,y = AAPL.Open,geom = 'line')]
+
+
 
 
 ## -------------------------------------------------------------------------- ##
@@ -162,14 +215,14 @@ renderHighcharts <- function(expr, env = parent.frame(), quoted = FALSE) {
 ## y = 'mpg'
 ## group = 'cyl'
 
-## highcharts(
+## highstocks(
 ##     data = data,
 ##     x = x,
 ##     y = y,
 ##     group = group
 ## )
 
-## highcharts(
+## highstocks(
 ##     dataList = dataList,
 ##     type  = 'pie',
 ##     creditsOpts =

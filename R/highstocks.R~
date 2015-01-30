@@ -1,35 +1,24 @@
-n#' A wrapper for Highcharts.js graphing library (http://api.highcharts.com/highcharts)
+n#' <Add Title>
 #'
-#' This function is a wrapper around the Highcharts.js library. This function is
-#' a wrapper around the Highstock.js library. Currently, this is still an early
-#' development version, so there are still quite many glitches.
-#' 
+#' <Add Description>
 #'
 #' @import htmlwidgets
 #'
 #' @export
-##' @param data A data.frame or data.table object, which must be in a long
-##' format. 
-##' @param x Name of the x-axis variable.
-##' @param y Name of the y-axis variable.
-##' @param group Name of the group variable. Default is NULL.
-##' @param type Type of the graph to be produced. See
-##' http://api.highcharts.com/highcharts for the possibilities.
-##' @param title Title of the graph
-##' @param xAxis A named list of options to be passed to the Highcharts API (see
-##' http://api.highcharts.com/highcharts for details)
-##' @param yAxis A named list of options to be passed to the Highcharts API (see
-##' http://api.highcharts.com/highcharts for details)
-##' @param width Width of the graph...
-##' @param height Height of the graph...
-##' @param chartOpts A named list of options to be passed to the Highcharts API (see
-##' http://api.highcharts.com/highcharts for details)
-##' @param creditsOpts  A named list of options to be passed to the Highcharts API (see
-##' http://api.highcharts.com/highcharts for details)
-##' @param exportingOpts A named list of options to be passed to the Highcharts API (see
-##' http://api.highcharts.com/highcharts for details)
-##' @param plotOptions  A named list of options to be passed to the Highcharts API (see
-##' http://api.highcharts.com/highcharts for details)
+##' @param data 
+##' @param x 
+##' @param y 
+##' @param group 
+##' @param type 
+##' @param title 
+##' @param xAxis 
+##' @param yAxis 
+##' @param width 
+##' @param height 
+##' @param chartOpts 
+##' @param creditsOpts 
+##' @param exportingOpts 
+##' @param plotOptions 
 ##' @param dataList A list of data.tables, one for each series to be plotted. 
 highcharts <- function(
     data = NULL,
@@ -157,23 +146,23 @@ renderHighcharts <- function(expr, env = parent.frame(), quoted = FALSE) {
 ##     )            
 ## )
 
-## data = mtcars
-## x = 'wt'
-## y = 'mpg'
-## group = 'cyl'
+data = mtcars
+x = 'wt'
+y = 'mpg'
+group = 'cyl'
 
-## highcharts(
-##     data = data,
-##     x = x,
-##     y = y,
-##     group = group
-## )
+highcharts(
+    data = data,
+    x = x,
+    y = y,
+    group = group
+)
 
 ## highcharts(
 ##     dataList = dataList,
 ##     type  = 'pie',
 ##     creditsOpts =
 ##         list(
-##             text = "test"
+##             text = "www.jankocizel.com"
 ##         )
 ## )

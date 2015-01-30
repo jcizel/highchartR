@@ -1,0 +1,22 @@
+dependencies:
+ - name: jquery
+   version: 1.11.2
+   src: htmlwidgets/lib
+   script: 
+     - jquery-1.11.2.min.js
+ - name: jquery2
+   version: 1.8.4
+   src: htmlwidgets/lib
+   script:
+     - jquery-1.8.3.min.js
+ - name: underscore
+   version: 1.7.0
+   src: htmlwidgets/lib
+   script:
+     - underscore.js
+ - name: highstocks
+   version: 2.0.4
+   src: htmlwidgets/lib/highstocks
+   script: 
+     - highstock.js
+     - modules/exporting.js
