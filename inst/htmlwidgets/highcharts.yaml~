@@ -1,0 +1,7 @@
+dependencies:
+ - name: highcharts
+   version: 4.0.4
+   src: htmlwidgets/lib
+   script: 
+     - highcharts.js
+     - modules/exporting.js
