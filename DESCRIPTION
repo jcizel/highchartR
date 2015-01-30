@@ -1,8 +1,8 @@
-Package: highcharts
-Title: What the Package Does (one line, title case)
+Package: highchartR
+Title: A htmlwidget wrapper around Highcharts and Highstock APIs 
 Version: 0.0.0.9000
-Authors@R: person("First", "Last", , "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph)
+Authors@R: person("Janko", "Cizel", , "jcizel@gmail.com", role = c("aut", "cre"))
+Description: This is a collection of htmlwidgets that provide a wrappers around Highchartsa and Highstock APIs. 
 Depends: R (>= 3.1.1),
 	 data.table,
 	 pipeR,
